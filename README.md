@@ -1,24 +1,28 @@
 # Landscape Workflow Studio
 
-基于 `Vue 3 + TypeScript + Pinia + Vue Router + Element Plus + ECharts` 重写的景观设计需求转译与场地分析前端项目。
+基于 `Vue 3 + TypeScript + Pinia + Vue Router + Element Plus + ECharts` 的景观设计前期工作流前端项目。
 
-这个版本不是对原始 Streamlit 页面做“像素级翻译”，而是把原项目的工作流重新设计为更适合简历展示和前端岗位面试的完整作品：
+这个版本将原有原型型工作流整理为一个可独立运行、可演示、可继续扩展的前端工程，覆盖知识库导入、场地分析、任务书生成、案例推荐、资产沉淀和项目设置等核心环节。
 
-- 保留原有能力链路：知识库管理、设计任务书、场地分析、案例推荐、在线案例检索、历史资产中心
-- 全部文件输出到独立目录 `landscape-workflow-vue3/`
-- 不改动原始 Python 项目
-- 支持 `演示模式` 与 `智能联网模式`
-- 适合作为“AI + 前端工程化 + 产品化设计”方向的简历项目
+## 项目目标
 
-## 1. 项目亮点
+- 把景观设计前期分析流程做成可运行的前端工作台，而不是静态页面演示
+- 保留“知识准备 -> 场地分析 -> 任务书生成 -> 结果沉淀”的完整链路
+- 兼顾演示模式与远程模型模式，方便作品集展示和后续接入真实服务
+- 使用清晰的工程结构承载页面、状态、规则、数据处理和持久化能力
 
-- 浏览器端知识库：支持内置规范导入、文件预检、分块、去重与轻量检索
-- 规则引擎迁移：把适老坡度、湿地提醒、敏感植物替换等规则迁到 TypeScript
-- 双模式生成：既能本地演示，也能填写 OpenAI Compatible 参数直接请求远程模型
-- 状态闭环：场地分析 -> 推荐案例 -> 勾选同步 -> 任务书生成 -> 历史资产沉淀
-- 前端工程化：多页面路由、全局状态仓库、服务层拆分、测试与文档齐备
+## 当前功能
 
-## 2. 技术栈
+- 首页总览：展示项目进度、最近活动、Token 用量和工作流成熟度
+- 知识库管理：支持导入内置规范文本，支持上传 `txt`、`pdf`、`docx` 文件并做预检、分块、去重和轻量检索
+- 场地分析：根据场地描述生成结构化分析结果，并结合规则给出补充建议
+- 任务书生成：结合知识库命中结果、场地分析结果和参考案例生成结构化设计任务书
+- 案例推荐：基于本地案例库进行相似案例推荐，并支持导入在线案例目录结果
+- 项目资产中心：查看历史记录、结果快照和工作流产出
+- 设置页：维护项目名、运行模式、模型参数、检索条数和提示词模板
+- 本地持久化：当前工作区状态会写入浏览器本地存储
+
+## 技术栈
 
 - `Vue 3`
 - `TypeScript`
@@ -26,12 +30,47 @@
 - `Pinia`
 - `Vue Router`
 - `Element Plus`
-- `ECharts + vue-echarts`
-- `mammoth`：解析 `.docx`
-- `pdfjs-dist`：解析 `.pdf`
+- `ECharts` + `vue-echarts`
+- `mammoth`
+- `pdfjs-dist`
 - `Vitest`
 
-## 3. 运行方式
+## 目录结构
+
+```text
+landscape-workflow-vue3/
+  docs/
+  public/
+    seed/
+      knowledge-base/
+  src/
+    components/
+    data/
+    router/
+    services/
+    stores/
+    styles/
+    types/
+    utils/
+    views/
+  .env.example
+  index.html
+  package.json
+  README.md
+  tsconfig.json
+  vite.config.ts
+```
+
+## 页面结构
+
+- `/overview`：总览页
+- `/knowledge-base`：知识库管理
+- `/site-analysis`：场地分析与案例检索
+- `/design-brief`：设计任务书生成
+- `/project-assets`：项目资产与历史记录
+- `/settings`：项目配置和提示词模板
+
+## 运行方式
 
 ### 安装依赖
 
@@ -51,7 +90,7 @@ npm.cmd install
 npm run dev
 ```
 
-### 构建生产版本
+### 生产构建
 
 ```bash
 npm run build
@@ -63,96 +102,50 @@ npm run build
 npm run test
 ```
 
-## 4. 模式说明
+## 两种运行模式
 
 ### 演示模式
 
-- 默认可直接运行
-- 使用浏览器端启发式逻辑完成任务书与场地分析
-- 适合答辩演示、录屏和简历项目展示
+- 不依赖外部模型服务即可运行
+- 由前端内置启发式逻辑生成任务书和场地分析结果
+- 适合作品集展示、录屏和页面联调
 
-### 智能联网模式
+### 远程模型模式
 
-- 需要用户填写 `API Key / Base URL / Model`
-- 前端直接请求 OpenAI Compatible 接口
-- 适合有可用模型服务、且服务端允许浏览器跨域访问的场景
+- 需要在设置页填写 `API Key`、`Base URL`、`Model`
+- 通过浏览器直接请求 OpenAI Compatible `chat/completions` 接口
+- 请求失败或返回异常时，当前实现会回退到演示模式结果
 
-## 5. 功能对应关系
+## 知识库机制
 
-| 原项目能力 | Vue 3 重写版实现 |
-| --- | --- |
-| 规范知识库导入 | 浏览器端内置规范导入 + 文件上传预检 |
-| 向量检索 | 浏览器端轻量文本分块检索 |
-| 设计任务书生成 | 任务书页面 + 规则引擎 + JSON 导出 |
-| 场地分析 | 场地分析页面 + 结构化结果展示 |
-| 本地案例推荐 | TypeScript 推荐服务 |
-| 在线案例检索 | 演示级在线案例目录检索与导入 |
-| 历史记录与归档 | 项目资产中心 + 本地缓存快照 |
+当前知识库是浏览器端轻量方案，不依赖独立后端或向量数据库：
 
-## 6. 目录结构
+- 导入内置规范文本或用户上传文件
+- 通过 `SHA-256` 做去重
+- 以固定大小切片做文本分块
+- 基于关键词和片段匹配做轻量召回
 
-```text
-landscape-workflow-vue3/
-  public/
-    seed/
-      knowledge-base/
-  src/
-    components/
-    data/
-    router/
-    services/
-    stores/
-    styles/
-    types/
-    utils/
-    views/
-  docs/
-    ARCHITECTURE.md
-    API_ADAPTER_GUIDE.md
-    MIGRATION_NOTES.md
-    RESUME_PROJECT_SUMMARY.md
-    UI_RESEARCH.md
-```
+这套实现不等价于完整 RAG，但足以支持当前前端演示工作流。
 
-## 7. 关键设计取舍
+## 数据与状态
 
-### 为什么不是“直接调用原 Python 后端”
+- 全局状态由 `src/stores/workflow.ts` 维护
+- 结果快照通过 `src/services/storage.ts` 持久化到 `localStorage`
+- 工作流编排由 `src/services/workflowService.ts` 负责
+- 规则修正由 `src/services/rulesEngine.ts` 负责
+- 模型调用与回退逻辑由 `src/services/llmService.ts` 负责
 
-用户需求是“改写为 Vue 3 的完整前端项目”，并且源项目不能改动。所以新方案优先保证：
+## 适合展示的亮点
 
-- 新目录独立运行
-- 前端自身可演示
-- 不依赖修改原仓库
+- 将原型式流程整理为前端工程化应用
+- 保留跨页面联动和业务闭环，而不只是单点页面还原
+- 通过 Pinia 建立“场地分析 -> 推荐案例 -> 任务书 -> 历史资产”的状态流
+- 在没有后端改造前提下，实现可运行的浏览器端知识库和双模式生成链路
 
-因此我把可迁移逻辑前端化了：
-
-- 规则引擎迁移到 `TypeScript`
-- 案例推荐逻辑迁移到 `TypeScript`
-- 知识库做成浏览器端轻量版本
-
-### 为什么保留演示模式
-
-如果只做远程 API 调用，新项目会依赖：
-
-- 模型账号
-- 跨域配置
-- 网络状态
-
-这对简历项目不友好。演示模式让它在没有后端配合的情况下也能完整跑通。
-
-## 8. 推荐展示方式
-
-适合在简历里写成：
-
-> 基于 Vue 3 + TypeScript 独立重构景观设计智能工作台，将原有 Streamlit 原型升级为支持知识库、规则引擎、案例推荐、任务书与场地分析闭环的前端工程项目，并补充演示模式、资产中心与工程化文档。
-
-更多表达方式见 [docs/RESUME_PROJECT_SUMMARY.md](./docs/RESUME_PROJECT_SUMMARY.md)。
-
-## 9. 文档索引
+## 文档索引
 
 - [架构说明](./docs/ARCHITECTURE.md)
 - [迁移说明](./docs/MIGRATION_NOTES.md)
-- [远程模型适配说明](./docs/API_ADAPTER_GUIDE.md)
+- [远程模型接入说明](./docs/API_ADAPTER_GUIDE.md)
 - [简历项目描述](./docs/RESUME_PROJECT_SUMMARY.md)
-- [UI 与技术方案调研](./docs/UI_RESEARCH.md)
-
+- [UI 与技术设计说明](./docs/UI_RESEARCH.md)
