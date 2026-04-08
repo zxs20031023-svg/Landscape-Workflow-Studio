@@ -1,0 +1,204 @@
+:root {
+  font-family: 'Source Sans 3', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #1c2a23;
+  background:
+    radial-gradient(circle at top left, rgba(205, 128, 78, 0.18), transparent 24%),
+    radial-gradient(circle at 90% 0%, rgba(70, 112, 92, 0.16), transparent 26%),
+    linear-gradient(180deg, #f5efe4 0%, #efe7d8 100%);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  --font-display: 'Noto Serif SC', serif;
+  --bg-main: rgba(255, 250, 243, 0.86);
+  --bg-panel: rgba(255, 255, 255, 0.76);
+  --bg-panel-strong: rgba(255, 252, 246, 0.94);
+  --line-soft: rgba(59, 74, 65, 0.12);
+  --line-strong: rgba(59, 74, 65, 0.22);
+  --text-main: #1c2a23;
+  --text-secondary: #5b695f;
+  --brand: #486e59;
+  --brand-deep: #2e4b3a;
+  --accent: #c87448;
+  --accent-soft: #efc9af;
+  --warning: #c27e2c;
+  --danger: #b85d42;
+  --success: #3e7d57;
+  --shadow-soft: 0 18px 48px rgba(54, 63, 55, 0.08);
+  --shadow-panel: 0 22px 60px rgba(53, 61, 52, 0.09);
+  --radius-xl: 30px;
+  --radius-lg: 24px;
+  --radius-md: 18px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  min-height: 100%;
+  margin: 0;
+}
+
+html {
+  overflow-y: auto;
+}
+
+body {
+  min-width: 320px;
+  color: var(--text-main);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+.page-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.1rem, 3vw, 3.2rem);
+  line-height: 1.06;
+  margin: 0;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: 1.42rem;
+  margin: 0 0 0.8rem;
+}
+
+.page-subtitle {
+  color: var(--text-secondary);
+  margin: 0;
+  max-width: 62ch;
+}
+
+.surface-card {
+  background: var(--bg-panel);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-panel);
+  backdrop-filter: blur(20px);
+}
+
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  width: fit-content;
+  padding: 0.42rem 0.82rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(72, 110, 89, 0.14), rgba(200, 116, 72, 0.12));
+  color: var(--brand-deep);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.page-grid {
+  display: grid;
+  gap: 1.2rem;
+}
+
+.muted {
+  color: var(--text-secondary);
+}
+
+.mono {
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.data-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0 0.55rem 0.55rem 0;
+  padding: 0.4rem 0.82rem;
+  border-radius: 999px;
+  border: 1px solid rgba(72, 110, 89, 0.1);
+  background: rgba(72, 110, 89, 0.08);
+  color: var(--brand-deep);
+  font-size: 0.86rem;
+}
+
+.json-block {
+  margin: 0;
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  overflow: auto;
+  background: rgba(22, 32, 26, 0.96);
+  color: #e9f1ea;
+  font-size: 0.84rem;
+  line-height: 1.6;
+}
+
+.panel-stack {
+  display: grid;
+  gap: 1rem;
+}
+
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 1rem;
+}
+
+.fact-list {
+  display: grid;
+  gap: 0.8rem;
+}
+
+:root .el-button {
+  border-radius: 14px;
+  font-weight: 700;
+}
+
+:root .el-button--primary {
+  --el-button-bg-color: var(--brand);
+  --el-button-border-color: var(--brand);
+  --el-button-hover-bg-color: var(--brand-deep);
+  --el-button-hover-border-color: var(--brand-deep);
+}
+
+:root .el-button--danger {
+  --el-button-bg-color: var(--danger);
+  --el-button-border-color: var(--danger);
+  --el-button-hover-bg-color: #9d4d36;
+  --el-button-hover-border-color: #9d4d36;
+}
+
+:root .el-input__wrapper,
+:root .el-textarea__inner,
+:root .el-select__wrapper {
+  border-radius: 16px;
+  box-shadow: none;
+}
+
+:root .el-table {
+  --el-table-border-color: rgba(59, 74, 65, 0.09);
+  --el-table-header-bg-color: rgba(244, 239, 230, 0.88);
+  --el-table-row-hover-bg-color: rgba(72, 110, 89, 0.04);
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+:root .el-alert {
+  border-radius: 16px;
+}
+
+@media (max-width: 960px) {
+  .page-title {
+    font-size: 2.3rem;
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "name": "landscape-workflow-vue3",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "node -e \"require('node:fs').rmSync('dist',{ recursive: true, force: true })\" && vue-tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@element-plus/icons-vue": "^2.3.1",
+    "@vueuse/core": "^13.1.0",
+    "echarts": "^6.0.0",
+    "element-plus": "^2.11.4",
+    "mammoth": "^1.10.0",
+    "pdfjs-dist": "^5.4.54",
+    "pinia": "^3.0.3",
+    "vue": "^3.5.22",
+    "vue-echarts": "^8.0.1",
+    "vue-router": "^4.6.3"
+  },
+  "devDependencies": {
+    "@types/node": "^24.6.0",
+    "@vitejs/plugin-vue": "^6.0.1",
+    "@vitest/ui": "^3.2.4",
+    "jsdom": "^26.1.0",
+    "sass": "^1.92.1",
+    "typescript": "^5.9.3",
+    "vite": "^7.1.7",
+    "vitest": "^3.2.4",
+    "vue-tsc": "^3.1.1"
+  }
+}
