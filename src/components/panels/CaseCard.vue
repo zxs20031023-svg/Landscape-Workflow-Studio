@@ -12,11 +12,7 @@
       <p class="case-card__meta">{{ project.projectType }} · {{ project.scene }}</p>
       <p class="case-card__summary">{{ project.summary }}</p>
       <div v-if="project.matchingPoints.length" class="case-card__chips">
-        <span
-          v-for="point in project.matchingPoints"
-          :key="point"
-          class="data-chip"
-        >
+        <span v-for="point in project.matchingPoints" :key="point" class="data-chip">
           {{ point }}
         </span>
       </div>
@@ -48,18 +44,25 @@ defineProps<{
 <style scoped lang="scss">
 .case-card {
   display: grid;
-  grid-template-columns: minmax(108px, 132px) minmax(0, 1fr);
+  grid-template-columns: minmax(116px, 144px) minmax(0, 1fr);
   gap: 1rem;
   padding: 1rem;
+  min-width: 0;
+  background:
+    radial-gradient(circle at top right, rgba(223, 210, 172, 0.18), transparent 28%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.58), rgba(243, 241, 233, 0.46));
 }
 
 .case-card__score {
   display: grid;
   align-content: start;
-  gap: 0.35rem;
-  padding: 0.9rem;
-  border-radius: var(--radius-md);
-  background: rgba(69, 109, 86, 0.1);
+  gap: 0.32rem;
+  padding: 0.95rem;
+  border-radius: 38% 62% 49% 51% / 42% 44% 56% 58%;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.62), rgba(231, 234, 224, 0.45)),
+    rgba(247, 244, 236, 0.6);
+  border: 1px solid rgba(113, 132, 109, 0.08);
 }
 
 .case-card__body {
@@ -77,6 +80,8 @@ defineProps<{
 
 .case-card__score strong {
   font-size: 2rem;
+  line-height: 1;
+  font-family: var(--font-display);
 }
 
 .case-card__title {
@@ -88,18 +93,26 @@ defineProps<{
 
 .case-card__title h3 {
   margin: 0;
-  font-size: 1.2rem;
+  font-size: 1.22rem;
   min-width: 0;
-  line-height: 1.4;
+  line-height: 1.3;
   word-break: break-word;
 }
 
 .case-card__summary {
   margin: 0;
+  color: var(--ink-soft);
+  line-height: 1.7;
+  word-break: break-word;
+}
+
+.case-card__chips {
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .case-card__link {
-  color: var(--brand);
+  color: var(--brand-deep);
   font-weight: 700;
 }
 

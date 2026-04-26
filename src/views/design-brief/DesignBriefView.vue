@@ -3,8 +3,8 @@
     <div class="page-grid">
       <PageHero
         kicker="Design Brief"
-        title="从自然语言需求到详细数字化任务书"
-        description="把设计需求、规范命中与参考案例转成更适合真实项目启动会使用的结构化任务书。"
+        title="从自然语言需求到结构化任务书"
+        description="把输入区、场地联动、参考案例和结果矩阵改造成更接近 Stitch 方案二的主副版式。"
       >
         <template #actions>
           <el-button
@@ -13,25 +13,46 @@
             :loading="store.loading.brief"
             @click="handleGenerate"
           >
-            生成数字化任务书
+            生成任务书
           </el-button>
           <el-button @click="router.push('/site-analysis')">
-            先做场地分析
+            返回场地分析
           </el-button>
+        </template>
+        <template v-if="store.lastBriefResult" #aside>
+          <div class="hero-summary">
+            <div class="hero-summary__item">
+              <span class="section-caption">目标人群</span>
+              <strong>{{ store.lastBriefResult.brief.targetUsers.length }}</strong>
+            </div>
+            <div class="hero-summary__item">
+              <span class="section-caption">功能分区</span>
+              <strong>{{ store.lastBriefResult.brief.functionalZones.length }}</strong>
+            </div>
+            <div class="hero-summary__item">
+              <span class="section-caption">规范命中</span>
+              <strong>{{ store.lastBriefResult.retrievalHits.length }}</strong>
+            </div>
+          </div>
         </template>
       </PageHero>
 
-      <section class="brief-grid">
-        <section class="surface-card panel-stack input-panel">
-          <div>
-            <h3 class="section-title">输入需求</h3>
-            <p class="muted">先确认场地分析，再录入公园类型和设计需求，任务书会自动联动场地结论与已选案例。</p>
+      <section class="brief-stage">
+        <section class="surface-card studio-panel">
+          <div class="panel-head">
+            <div>
+              <span class="section-caption">Brief Studio</span>
+              <h3 class="section-title">输入设计需求</h3>
+            </div>
+            <el-button plain @click="router.push('/site-analysis')">
+              {{ hasSiteAnalysis ? '更新场地分析' : '去做场地分析' }}
+            </el-button>
           </div>
 
           <div class="field-stack">
             <div class="field-head">
-              <span class="info-label">公园类型</span>
-              <span class="muted">支持直接输入自定义类型</span>
+              <span class="info-label">Park Type</span>
+              <span class="muted">支持输入自定义类型</span>
             </div>
             <el-select
               v-model="selectedParkType"
@@ -50,11 +71,7 @@
             </el-select>
           </div>
 
-          <el-select
-            v-model="selectedSample"
-            placeholder="快速示例"
-            @change="handleSampleChange"
-          >
+          <el-select v-model="selectedSample" placeholder="快速示例" @change="handleSampleChange">
             <el-option
               v-for="item in BRIEF_SAMPLES"
               :key="item.label"
@@ -66,140 +83,137 @@
           <el-input
             v-model="briefInput"
             type="textarea"
-            :rows="11"
-            placeholder="输入设计需求..."
+            :rows="12"
+            placeholder="输入设计需求、目标人群、活动方向、预算条件和风格取向..."
           />
         </section>
 
-        <section class="surface-card panel-stack linkage-panel">
-          <div class="panel-head">
-            <div>
-              <h3 class="section-title">场地分析联动</h3>
-              <p class="muted">任务书生成时会自动读取最近一次场地分析的核心判断、落地约束和设计建议。</p>
+        <aside class="brief-side">
+          <section class="surface-card pebble-panel">
+            <span class="section-caption">Linked Site Context</span>
+            <el-empty
+              v-if="!hasSiteAnalysis"
+              description="请先完成场地分析，任务书会自动读取场地结论与约束。"
+            />
+            <div v-else class="context-pebbles">
+              <div v-for="item in siteLinkageCards" :key="item.label" class="context-pebble">
+                <span class="info-label">{{ item.label }}</span>
+                <p>{{ item.value }}</p>
+              </div>
             </div>
-            <el-button plain @click="router.push('/site-analysis')">
-              {{ hasSiteAnalysis ? '更新场地分析' : '去做场地分析' }}
-            </el-button>
-          </div>
+          </section>
 
-          <el-empty
-            v-if="!hasSiteAnalysis"
-            description="请先完成场地分析，任务书会基于场地分析结果再结合设计需求生成。"
-          />
+          <section class="surface-card note-panel">
+            <span class="section-caption">Workflow Focus</span>
+            <strong>把场地判断、规范命中与参考案例真正并入同一份任务书结构。</strong>
+          </section>
+        </aside>
+      </section>
 
-          <div v-else class="summary-grid">
-            <div
-              v-for="item in siteLinkageCards"
-              :key="item.label"
-              class="info-block"
-            >
-              <span class="info-label">{{ item.label }}</span>
-              <p>{{ item.value }}</p>
-            </div>
-          </div>
-        </section>
-
-        <section class="surface-card panel-stack selection-panel selection-panel--full">
+      <section class="surface-card board-panel">
+        <div class="panel-head">
           <div>
+            <span class="section-caption">Reference Board</span>
             <h3 class="section-title">已选参考项目</h3>
             <p class="muted">来自场地分析推荐或在线案例导入，生成任务书时会自动写入。</p>
           </div>
-          <el-empty
-            v-if="!store.selectedReferenceProjects.length"
-            description="当前还没有勾选参考项目。"
+        </div>
+        <el-empty v-if="!store.selectedReferenceProjects.length" description="当前还没有勾选参考项目。" />
+        <div v-else class="reference-grid">
+          <CaseCard
+            v-for="project in store.selectedReferenceProjects"
+            :key="project.projectId"
+            :project="project"
           />
-          <div v-else class="selected-projects">
-            <CaseCard
-              v-for="project in store.selectedReferenceProjects"
-              :key="project.projectId"
-              :project="project"
-            />
-          </div>
-        </section>
+        </div>
       </section>
 
       <div v-if="store.lastBriefResult" class="page-grid">
-        <section class="surface-card panel-stack panel">
-          <div class="panel-head">
-            <div>
-              <h3 class="section-title">任务书摘要</h3>
-              <p class="muted">先快速确认项目类型、定位和关键控制指标是否合理。</p>
+        <section class="brief-dashboard">
+          <section class="surface-card board-panel board-panel--main">
+            <div class="panel-head">
+              <div>
+                <span class="section-caption">Brief Summary</span>
+                <h3 class="section-title">任务书摘要</h3>
+              </div>
+              <el-button type="primary" plain @click="downloadBrief">
+                下载 JSON
+              </el-button>
             </div>
-            <el-button type="primary" plain @click="downloadBrief">
-              下载 JSON
-            </el-button>
-          </div>
 
-          <div class="metric-grid">
-            <MetricCard
-              label="项目类型"
-              :value="store.lastBriefResult.brief.projectType"
-            />
-            <MetricCard
-              label="目标人群"
-              :value="String(store.lastBriefResult.brief.targetUsers.length)"
-              hint="类"
-            />
-            <MetricCard
-              label="功能分区"
-              :value="String(store.lastBriefResult.brief.functionalZones.length)"
-              hint="项"
-            />
-            <MetricCard
-              label="规范依据"
-              :value="String(store.lastBriefResult.retrievalHits.length)"
-              hint="条"
-            />
-          </div>
+            <div class="summary-matrix">
+              <article class="summary-node summary-node--main">
+                <span class="info-label">Project Type</span>
+                <strong>{{ store.lastBriefResult.brief.projectType }}</strong>
+                <p>{{ store.lastBriefResult.brief.projectPositioning }}</p>
+              </article>
+              <article class="summary-node">
+                <span class="info-label">Spatial Structure</span>
+                <p>{{ store.lastBriefResult.brief.spatialStructure }}</p>
+              </article>
+              <article class="summary-node">
+                <span class="info-label">Planting Strategy</span>
+                <p>{{ store.lastBriefResult.brief.plantingStrategy }}</p>
+              </article>
+            </div>
+          </section>
 
-          <div class="summary-grid">
-            <div class="info-block">
-              <span class="info-label">项目定位</span>
-              <p>{{ store.lastBriefResult.brief.projectPositioning }}</p>
-            </div>
-            <div class="info-block">
-              <span class="info-label">空间结构</span>
-              <p>{{ store.lastBriefResult.brief.spatialStructure }}</p>
-            </div>
-            <div class="info-block">
-              <span class="info-label">种植策略</span>
-              <p>{{ store.lastBriefResult.brief.plantingStrategy }}</p>
-            </div>
-          </div>
+          <aside class="brief-dashboard__side">
+            <section class="surface-card board-panel">
+              <div>
+                <span class="section-caption">Review</span>
+                <h3 class="section-title">复核建议</h3>
+              </div>
+              <div class="review-card">
+                <strong>可信度：{{ briefReview.confidence }}</strong>
+                <ul>
+                  <li v-for="item in briefReview.reviewItems" :key="item">
+                    {{ item }}
+                  </li>
+                </ul>
+              </div>
+            </section>
 
-          <div class="review-card">
-            <strong>可信度：{{ briefReview.confidence }}</strong>
-            <ul>
-              <li v-for="item in briefReview.reviewItems" :key="item">
-                {{ item }}
-              </li>
-            </ul>
-          </div>
+            <section class="surface-card board-panel">
+              <div>
+                <span class="section-caption">Brief Metrics</span>
+                <h3 class="section-title">结果概况</h3>
+              </div>
+              <div class="metric-column">
+                <MetricCard label="目标人群" :value="String(store.lastBriefResult.brief.targetUsers.length)" />
+                <MetricCard label="功能分区" :value="String(store.lastBriefResult.brief.functionalZones.length)" />
+                <MetricCard label="规范命中" :value="String(store.lastBriefResult.retrievalHits.length)" />
+              </div>
+            </section>
+          </aside>
         </section>
 
-        <section class="detail-grid">
-          <section class="surface-card panel-stack panel">
-            <h3 class="section-title">业务要点</h3>
-            <div class="detail-columns">
-              <div class="info-block">
+        <section class="detail-board">
+          <section class="surface-card board-panel">
+            <div>
+              <span class="section-caption">Requirement Matrix</span>
+              <h3 class="section-title">业务要点</h3>
+            </div>
+            <div class="detail-grid">
+              <div class="detail-node">
                 <span class="info-label">目标人群</span>
                 <ul class="fact-list">
                   <li v-for="item in store.lastBriefResult.brief.targetUsers" :key="item">{{ item }}</li>
                 </ul>
               </div>
-              <div class="info-block">
+              <div class="detail-node">
                 <span class="info-label">项目目标</span>
                 <ul class="fact-list">
                   <li v-for="item in store.lastBriefResult.brief.projectGoals" :key="item">{{ item }}</li>
                 </ul>
               </div>
-              <div class="info-block">
+              <div class="detail-node">
                 <span class="info-label">设计原则</span>
                 <ul class="fact-list">
                   <li v-for="item in store.lastBriefResult.brief.designPrinciples" :key="item">{{ item }}</li>
                 </ul>
               </div>
-              <div class="info-block">
+              <div class="detail-node">
                 <span class="info-label">活动编程</span>
                 <ul class="fact-list">
                   <li v-for="item in store.lastBriefResult.brief.activityPrograms" :key="item">{{ item }}</li>
@@ -208,16 +222,19 @@
             </div>
           </section>
 
-          <section class="surface-card panel-stack panel">
-            <h3 class="section-title">空间与运营建议</h3>
-            <div class="detail-columns">
-              <div class="info-block">
+          <section class="surface-card board-panel">
+            <div>
+              <span class="section-caption">Implementation Matrix</span>
+              <h3 class="section-title">空间与运营建议</h3>
+            </div>
+            <div class="detail-grid">
+              <div class="detail-node">
                 <span class="info-label">功能分区</span>
                 <ul class="fact-list">
                   <li v-for="item in store.lastBriefResult.brief.functionalZones" :key="item">{{ item }}</li>
                 </ul>
               </div>
-              <div class="info-block">
+              <div class="detail-node">
                 <span class="info-label">运维建议</span>
                 <ul class="fact-list">
                   <li
@@ -228,10 +245,10 @@
                   </li>
                 </ul>
               </div>
-              <div class="info-block">
-                <span class="info-label">关键控制指标</span>
+              <div class="detail-node">
+                <span class="info-label">关键指标</span>
                 <ul class="fact-list">
-                  <li>树荫覆盖目标：{{ formatPercent(store.lastBriefResult.brief.canopyClosure) }}</li>
+                  <li>树冠覆盖目标：{{ formatPercent(store.lastBriefResult.brief.canopyClosure) }}</li>
                   <li>最大坡度：{{ store.lastBriefResult.brief.pathSlopeMaxPercentage }}%</li>
                   <li>硬质铺装比例：{{ formatPercent(store.lastBriefResult.brief.hardscapeRatio) }}</li>
                 </ul>
@@ -240,8 +257,11 @@
           </section>
         </section>
 
-        <section class="surface-card panel-stack panel">
-          <h3 class="section-title">风险与复核项</h3>
+        <section class="surface-card board-panel">
+          <div>
+            <span class="section-caption">Warnings</span>
+            <h3 class="section-title">风险与复核项</h3>
+          </div>
           <div class="warning-list">
             <el-alert
               v-for="warning in store.lastBriefResult.brief.warnings"
@@ -253,14 +273,14 @@
           </div>
         </section>
 
-        <section class="detail-grid">
-          <section class="surface-card panel-stack panel">
+        <section class="detail-board">
+          <section class="surface-card board-panel">
             <div>
+              <span class="section-caption">Evidence Board</span>
               <h3 class="section-title">检索依据与规则命中</h3>
-              <p class="muted">便于你在汇报或答辩时说明系统不是黑盒生成。</p>
             </div>
-            <div class="detail-columns">
-              <div class="info-block">
+            <div class="detail-grid detail-grid--evidence">
+              <div class="detail-node">
                 <span class="info-label">规范检索命中</span>
                 <ul class="fact-list">
                   <li
@@ -272,13 +292,10 @@
                   </li>
                 </ul>
               </div>
-              <div class="info-block">
+              <div class="detail-node">
                 <span class="info-label">规则引擎命中</span>
                 <ul v-if="store.lastBriefResult.appliedRules.length" class="fact-list">
-                  <li
-                    v-for="rule in store.lastBriefResult.appliedRules"
-                    :key="rule.ruleId"
-                  >
+                  <li v-for="rule in store.lastBriefResult.appliedRules" :key="rule.ruleId">
                     <strong>{{ rule.title }}</strong>
                     <p>{{ rule.warning }}</p>
                   </li>
@@ -340,11 +357,11 @@ const siteLinkageCards = computed(() => {
     },
     {
       label: '重点约束',
-      value: analysis.constraints.slice(0, 2).join('；') || '待补充'
+      value: analysis.constraints.slice(0, 2).join('、') || '待补充'
     },
     {
       label: '设计建议',
-      value: analysis.designSuggestions.slice(0, 2).join('；') || '待补充'
+      value: analysis.designSuggestions.slice(0, 2).join('、') || '待补充'
     }
   ];
 });
@@ -403,105 +420,199 @@ function downloadBrief() {
 </script>
 
 <style scoped lang="scss">
-.brief-grid,
-.detail-grid {
+.brief-stage,
+.brief-dashboard,
+.detail-board {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
 }
 
-.input-panel,
-.linkage-panel,
-.selection-panel,
-.panel {
-  padding: 1rem 1.1rem;
+.brief-stage {
+  grid-template-columns: minmax(0, 1.45fr) minmax(290px, 0.62fr);
+}
+
+.brief-dashboard {
+  grid-template-columns: minmax(0, 1.42fr) minmax(300px, 0.68fr);
+  align-items: start;
+}
+
+.detail-board {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.studio-panel,
+.board-panel,
+.pebble-panel,
+.note-panel {
+  padding: 1.15rem 1.2rem;
+  background:
+    radial-gradient(circle at top right, rgba(216, 203, 171, 0.16), transparent 26%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.54), rgba(241, 240, 232, 0.42)),
+    rgba(255, 252, 246, 0.42);
+}
+
+.panel-head,
+.field-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
 }
 
 .field-stack {
   display: grid;
   gap: 0.45rem;
+  margin: 1rem 0 0.9rem;
 }
 
-.field-head {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  align-items: center;
-}
-
-.selected-projects {
+.brief-side,
+.brief-dashboard__side {
   display: grid;
-  gap: 0.85rem;
-}
-
-.selection-panel--full {
-  grid-column: 1 / -1;
-}
-
-.panel-head {
-  display: flex;
-  justify-content: space-between;
   gap: 1rem;
-  align-items: flex-start;
 }
 
-.summary-grid,
-.detail-columns {
+.hero-summary {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 0.85rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
 }
 
-.info-block,
+.hero-summary__item {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.9rem 1rem;
+  border-radius: 44% 56% 48% 52% / 46% 41% 59% 54%;
+  border: 1px solid rgba(113, 132, 109, 0.08);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.65), rgba(239, 238, 230, 0.44)),
+    rgba(255, 252, 246, 0.4);
+  box-shadow: var(--shadow-soft);
+}
+
+.hero-summary__item strong {
+  font-size: 1.8rem;
+  line-height: 1;
+  font-family: var(--font-display);
+}
+
+.context-pebbles,
+.metric-column,
+.reference-grid,
+.warning-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.context-pebbles {
+  margin-top: 0.8rem;
+}
+
+.context-pebble,
+.summary-node,
+.detail-node,
 .review-card {
-  padding: 1rem;
-  border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.72);
+  padding: 1rem 1.05rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(113, 132, 109, 0.08);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.62), rgba(240, 239, 231, 0.46)),
+    rgba(255, 252, 246, 0.38);
+  box-shadow: var(--shadow-soft);
 }
 
-.info-label {
-  display: block;
-  margin-bottom: 0.55rem;
-  color: var(--text-secondary);
-  font-size: 0.86rem;
-  letter-spacing: 0.03em;
-}
-
-.info-block p,
+.context-pebble p,
+.summary-node p,
 .review-card ul {
-  margin: 0;
+  margin: 0.65rem 0 0;
+  color: var(--text-secondary);
+  line-height: 1.7;
 }
 
-.fact-list {
-  margin: 0;
-  padding-left: 1rem;
+.summary-matrix,
+.detail-grid {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
 }
 
-.fact-list p {
+.summary-matrix {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.summary-node--main {
+  grid-column: span 2;
+}
+
+.summary-node--main strong {
+  display: block;
+  margin-top: 0.35rem;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3vw, 2.8rem);
+  line-height: 0.95;
+}
+
+.detail-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.detail-grid--evidence {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.detail-node .fact-list {
+  margin: 0.65rem 0 0;
+}
+
+.detail-node .fact-list p {
   margin: 0.2rem 0 0;
   color: var(--text-secondary);
 }
 
-.warning-list {
-  display: grid;
-  gap: 0.75rem;
+.note-panel {
+  align-content: center;
+  border-radius: 46% 54% 49% 51% / 44% 42% 58% 56%;
+}
+
+.note-panel strong {
+  font-family: var(--font-display);
+  font-size: 1.36rem;
+  line-height: 1.2;
+}
+
+.info-label {
+  display: block;
+  color: var(--text-secondary);
+  font-size: 0.76rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 @media (max-width: 1180px) {
-  .brief-grid,
-  .detail-grid {
+  .brief-stage,
+  .brief-dashboard,
+  .detail-board {
     grid-template-columns: 1fr;
   }
 
-  .selection-panel--full {
-    grid-column: auto;
+  .detail-grid,
+  .detail-grid--evidence {
+    grid-template-columns: 1fr 1fr;
   }
 }
 
 @media (max-width: 720px) {
-  .field-head {
+  .panel-head,
+  .field-head,
+  .hero-summary,
+  .summary-matrix,
+  .detail-grid,
+  .detail-grid--evidence {
+    grid-template-columns: 1fr;
     flex-direction: column;
-    align-items: flex-start;
+  }
+
+  .summary-node--main {
+    grid-column: auto;
   }
 }
 </style>

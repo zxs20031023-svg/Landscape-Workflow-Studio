@@ -1,6 +1,6 @@
 <template>
   <div class="metric-card surface-card">
-    <span>{{ label }}</span>
+    <span class="metric-card__label">{{ label }}</span>
     <strong>{{ value }}</strong>
     <small v-if="hint">{{ hint }}</small>
   </div>
@@ -17,25 +17,30 @@ defineProps<{
 <style scoped lang="scss">
 .metric-card {
   display: grid;
-  gap: 0.45rem;
-  padding: 1rem 1.05rem;
+  gap: 0.42rem;
+  min-width: 0;
+  padding: 1rem 1.1rem;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.8), rgba(251, 248, 242, 0.86)),
-    rgba(255, 255, 255, 0.65);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.58), rgba(242, 240, 233, 0.45)),
+    rgba(255, 252, 246, 0.44);
 }
 
-.metric-card span,
+.metric-card__label,
 .metric-card small {
   color: var(--text-secondary);
 }
 
-.metric-card span {
-  font-size: 0.84rem;
-  letter-spacing: 0.03em;
+.metric-card__label {
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .metric-card strong {
-  font-size: 1.9rem;
-  line-height: 1.06;
+  min-width: 0;
+  font-size: clamp(1.6rem, 2.2vw, 2.2rem);
+  line-height: 1;
+  font-family: var(--font-display);
+  word-break: break-word;
 }
 </style>

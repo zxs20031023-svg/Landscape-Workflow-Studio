@@ -26,6 +26,10 @@ const serialized = computed(() => JSON.stringify(props.payload, null, 2));
 <style scoped lang="scss">
 .panel {
   padding: 1rem;
+  min-width: 0;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.56), rgba(240, 239, 230, 0.4)),
+    rgba(255, 252, 246, 0.42);
 }
 
 .panel-head {
@@ -38,5 +42,11 @@ const serialized = computed(() => JSON.stringify(props.payload, null, 2));
 
 .panel-head p {
   margin: 0;
+}
+
+@media (max-width: 720px) {
+  .panel-head {
+    flex-direction: column;
+  }
 }
 </style>

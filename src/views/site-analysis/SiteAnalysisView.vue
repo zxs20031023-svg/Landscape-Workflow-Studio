@@ -4,40 +4,53 @@
       <PageHero
         kicker="Site Analysis"
         title="场地分析、案例推荐与在线检索联动"
-        description="场地分析升级为 8 大业务模块输出，可直接支撑任务书编制、方案启动会和内部评审。"
+        description="把输入区、分析摘要、约束建议和案例联动重新组织成主副布局，更贴近 Stitch 方案二的场地分析工作台。"
       >
         <template #actions>
-          <el-button
-            type="primary"
-            :loading="store.loading.site"
-            @click="handleAnalyze"
-          >
-            生成场地分析报告
+          <el-button type="primary" :loading="store.loading.site" @click="handleAnalyze">
+            生成场地分析
           </el-button>
           <el-button @click="router.push('/design-brief')">
-            去看任务书页
+            查看任务书
           </el-button>
+        </template>
+        <template v-if="store.lastSiteResult" #aside>
+          <div class="hero-summary">
+            <div class="hero-summary__item">
+              <span class="section-caption">SWOT</span>
+              <strong>{{ swotItemCount }}</strong>
+            </div>
+            <div class="hero-summary__item">
+              <span class="section-caption">约束</span>
+              <strong>{{ store.lastSiteResult.analysis.constraints.length }}</strong>
+            </div>
+            <div class="hero-summary__item">
+              <span class="section-caption">推荐项目</span>
+              <strong>{{ store.lastSiteResult.recommendedProjects.length }}</strong>
+            </div>
+          </div>
         </template>
       </PageHero>
 
-      <section class="site-grid">
-        <section class="surface-card panel-stack input-panel">
-          <div>
-            <h3 class="section-title">场地资料输入</h3>
-            <p class="muted">支持手动输入，也可上传 `.txt / .pdf / .docx` 作为补充材料。</p>
+      <section class="analysis-stage">
+        <section class="surface-card studio-panel">
+          <div class="studio-panel__head">
+            <div>
+              <span class="section-caption">Analysis Studio</span>
+              <h3 class="section-title">输入场地资料</h3>
+            </div>
+            <el-upload
+              :auto-upload="false"
+              :show-file-list="false"
+              accept=".txt,.pdf,.docx,.doc"
+              @change="handleSelectSiteFile"
+            >
+              <el-button type="primary" plain>选择文件</el-button>
+            </el-upload>
           </div>
 
-          <el-upload
-            :auto-upload="false"
-            :show-file-list="false"
-            accept=".txt,.pdf,.docx,.doc"
-            @change="handleSelectSiteFile"
-          >
-            <el-button type="primary" plain>选择场地文件</el-button>
-          </el-upload>
-
-          <div class="file-state">
-            <span class="muted">当前文件</span>
+          <div class="studio-panel__file">
+            <span class="info-label">Current File</span>
             <strong>{{ selectedSiteFile?.name || '未附加文件' }}</strong>
           </div>
 
@@ -45,74 +58,115 @@
             v-model="siteInput"
             type="textarea"
             :rows="12"
-            placeholder="输入场地描述..."
+            placeholder="输入场地描述、现状问题、气候地形、周边功能和人群特征..."
           />
+
+          <div class="studio-panel__actions">
+            <el-button type="primary" :loading="store.loading.site" @click="handleAnalyze">
+              生成场地分析报告
+            </el-button>
+            <el-button plain @click="handleSearchOnlineCases">
+              检索在线案例
+            </el-button>
+          </div>
         </section>
 
-        <section v-if="store.lastSiteResult" class="surface-card panel-stack panel">
+        <aside class="analysis-side">
+          <section class="surface-card pebble-panel">
+            <span class="section-caption">Site Capsule</span>
+            <div class="pebble-list">
+              <div class="pebble-pill">
+                <span>分析信心</span>
+                <strong>{{ siteReview.confidence }}</strong>
+              </div>
+              <div class="pebble-pill">
+                <span>在线检索</span>
+                <strong>{{ store.onlineCaseResults.length }}</strong>
+              </div>
+              <div class="pebble-pill">
+                <span>已选案例</span>
+                <strong>{{ store.selectedReferenceProjectIds.length }}</strong>
+              </div>
+            </div>
+          </section>
+
+          <section class="surface-card note-panel">
+            <span class="section-caption">Workflow Focus</span>
+            <strong>
+              清晰输入、结构化判断与案例联动，适合在前期汇报时直接展开说明。
+            </strong>
+          </section>
+        </aside>
+      </section>
+
+      <section v-if="store.lastSiteResult" class="analysis-dashboard">
+        <section class="surface-card dashboard-panel dashboard-panel--main">
           <div class="panel-head">
             <div>
-              <h3 class="section-title">分析摘要</h3>
-              <p class="muted">先从模块完整度、约束数量和建议数量判断这次分析是否足够支撑后续工作。</p>
+              <span class="section-caption">Analysis Matrix</span>
+              <h3 class="section-title">七个核心判断模块</h3>
             </div>
             <el-button type="primary" plain @click="downloadSiteAnalysis">
               下载 JSON
             </el-button>
           </div>
 
-          <div class="metric-grid">
-            <MetricCard label="SWOT 条目" :value="String(swotItemCount)" />
-            <MetricCard
-              label="落地约束"
-              :value="String(store.lastSiteResult.analysis.constraints.length)"
-            />
-            <MetricCard
-              label="设计建议"
-              :value="String(store.lastSiteResult.analysis.designSuggestions.length)"
-            />
-            <MetricCard
-              label="推荐项目"
-              :value="String(store.lastSiteResult.recommendedProjects.length)"
-            />
-          </div>
-
-          <div class="review-card">
-            <strong>可信度：{{ siteReview.confidence }}</strong>
-            <ul>
-              <li v-for="item in siteReview.reviewItems" :key="item">
-                {{ item }}
-              </li>
-            </ul>
+          <div class="analysis-matrix">
+            <article
+              v-for="section in analysisSections"
+              :key="section.title"
+              class="analysis-node"
+            >
+              <span class="info-label">{{ section.title }}</span>
+              <p>{{ section.content }}</p>
+            </article>
           </div>
         </section>
+
+        <aside class="dashboard-panel dashboard-panel--side">
+          <section class="surface-card dashboard-stack">
+            <div>
+              <span class="section-caption">Review</span>
+              <h3 class="section-title">复核建议</h3>
+            </div>
+            <div class="review-card">
+              <strong>可信度：{{ siteReview.confidence }}</strong>
+              <ul>
+                <li v-for="item in siteReview.reviewItems" :key="item">
+                  {{ item }}
+                </li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="surface-card dashboard-stack">
+            <div>
+              <span class="section-caption">Metric Pebbles</span>
+              <h3 class="section-title">当前结果概况</h3>
+            </div>
+            <div class="metric-pebbles">
+              <MetricCard label="SWOT 条目" :value="String(swotItemCount)" />
+              <MetricCard
+                label="落地约束"
+                :value="String(store.lastSiteResult.analysis.constraints.length)"
+              />
+              <MetricCard
+                label="设计建议"
+                :value="String(store.lastSiteResult.analysis.designSuggestions.length)"
+              />
+            </div>
+          </section>
+        </aside>
       </section>
 
-      <section v-if="store.lastSiteResult" class="surface-card panel-stack panel">
-        <div>
-          <h3 class="section-title">八大分析模块</h3>
-          <p class="muted">按真实前期分析逻辑展开，便于你逐项核对和汇报。</p>
-        </div>
-
-        <div class="analysis-grid">
-          <article
-            v-for="section in analysisSections"
-            :key="section.title"
-            class="analysis-card"
-          >
-            <span class="info-label">{{ section.title }}</span>
-            <p>{{ section.content }}</p>
-          </article>
-        </div>
-      </section>
-
-      <section v-if="store.lastSiteResult" class="detail-grid">
-        <section class="surface-card panel-stack panel">
+      <section v-if="store.lastSiteResult" class="detail-board">
+        <section class="surface-card board-panel">
           <div>
+            <span class="section-caption">SWOT Board</span>
             <h3 class="section-title">SWOT 分析</h3>
-            <p class="muted">把场地优势、短板、机会和风险拆开，方便方案启动阶段快速对焦。</p>
           </div>
-          <div class="analysis-grid">
-            <article class="analysis-card">
+          <div class="quad-grid">
+            <article class="analysis-node">
               <span class="info-label">Strengths</span>
               <ul class="fact-list">
                 <li v-for="item in store.lastSiteResult.analysis.swotAnalysis.strengths" :key="item">
@@ -120,7 +174,7 @@
                 </li>
               </ul>
             </article>
-            <article class="analysis-card">
+            <article class="analysis-node">
               <span class="info-label">Weaknesses</span>
               <ul class="fact-list">
                 <li v-for="item in store.lastSiteResult.analysis.swotAnalysis.weaknesses" :key="item">
@@ -128,7 +182,7 @@
                 </li>
               </ul>
             </article>
-            <article class="analysis-card">
+            <article class="analysis-node">
               <span class="info-label">Opportunities</span>
               <ul class="fact-list">
                 <li
@@ -139,7 +193,7 @@
                 </li>
               </ul>
             </article>
-            <article class="analysis-card">
+            <article class="analysis-node">
               <span class="info-label">Threats</span>
               <ul class="fact-list">
                 <li v-for="item in store.lastSiteResult.analysis.swotAnalysis.threats" :key="item">
@@ -150,13 +204,13 @@
           </div>
         </section>
 
-        <section class="surface-card panel-stack panel">
+        <section class="surface-card board-panel">
           <div>
-            <h3 class="section-title">落地约束与设计建议</h3>
-            <p class="muted">这里的内容最适合直接迁移到任务书、方案前置风险清单或启动会纪要。</p>
+            <span class="section-caption">Action Board</span>
+            <h3 class="section-title">约束与建议</h3>
           </div>
-          <div class="analysis-grid">
-            <article class="analysis-card">
+          <div class="quad-grid quad-grid--two">
+            <article class="analysis-node">
               <span class="info-label">落地约束</span>
               <ul class="fact-list">
                 <li v-for="item in store.lastSiteResult.analysis.constraints" :key="item">
@@ -164,7 +218,7 @@
                 </li>
               </ul>
             </article>
-            <article class="analysis-card">
+            <article class="analysis-node">
               <span class="info-label">设计建议</span>
               <ul class="fact-list">
                 <li v-for="item in store.lastSiteResult.analysis.designSuggestions" :key="item">
@@ -176,9 +230,10 @@
         </section>
       </section>
 
-      <section class="surface-card panel-stack panel">
+      <section class="surface-card board-panel">
         <div class="panel-head">
           <div>
+            <span class="section-caption">Reference Library</span>
             <h3 class="section-title">相关项目推荐</h3>
             <p class="muted">勾选后会自动同步到任务书模块。</p>
           </div>
@@ -195,9 +250,7 @@
               class="checkbox-card"
             >
               <div class="checkbox-card__head">
-                <el-checkbox :label="project.projectId">
-                  纳入任务书
-                </el-checkbox>
+                <el-checkbox :label="project.projectId">纳入任务书</el-checkbox>
               </div>
               <CaseCard :project="project" />
             </label>
@@ -206,25 +259,22 @@
 
         <el-empty
           v-if="!store.siteRecommendations.length"
-          description="完成场地分析后，这里会自动出现相关项目推荐。"
+          description="完成场地分析后，这里会自动出现相关推荐项目。"
         />
       </section>
 
-      <section class="surface-card panel-stack panel">
+      <section class="surface-card board-panel">
         <div class="panel-head">
           <div>
+            <span class="section-caption">Online Search</span>
             <h3 class="section-title">在线案例检索</h3>
-            <p class="muted">保留检索、勾选、导入与同步链路，便于继续扩充案例库。</p>
           </div>
-          <div class="action-row">
-            <el-button
-              :loading="store.loading.onlineSearch"
-              @click="handleSearchOnlineCases"
-            >
-              检索在线案例
+          <div class="studio-panel__actions">
+            <el-button :loading="store.loading.onlineSearch" @click="handleSearchOnlineCases">
+              检索案例
             </el-button>
             <el-button type="primary" plain @click="handleImportCases">
-              导入所选在线案例
+              导入所选案例
             </el-button>
           </div>
         </div>
@@ -239,26 +289,21 @@
           :model-value="store.selectedOnlineCaseIds"
           @change="handleOnlineSelection"
         >
-          <div class="recommendation-grid">
+          <div class="recommendation-grid recommendation-grid--online">
             <label
               v-for="project in store.onlineCaseResults"
               :key="project.projectId"
               class="checkbox-card"
             >
               <div class="checkbox-card__head">
-                <el-checkbox :label="project.projectId">
-                  导入案例库
-                </el-checkbox>
+                <el-checkbox :label="project.projectId">导入案例库</el-checkbox>
               </div>
               <CaseCard :project="project" />
             </label>
           </div>
         </el-checkbox-group>
 
-        <el-empty
-          v-else
-          description="检索后会在这里显示在线案例结果。"
-        />
+        <el-empty v-else description="检索后会在这里显示在线案例结果。" />
       </section>
 
       <JsonPanel
@@ -319,7 +364,7 @@ const analysisSections = computed(() => {
     { title: '场地现状分析', content: analysis.currentConditionsAnalysis },
     { title: '人群分析', content: analysis.populationAnalysis },
     { title: '气候分析', content: analysis.climateAnalysis },
-    { title: '文化/历史分析', content: analysis.culturalHistoricalAnalysis }
+    { title: '文化 / 历史分析', content: analysis.culturalHistoricalAnalysis }
   ];
 });
 
@@ -383,45 +428,49 @@ function handleImportCases() {
     ElMessage.info('所选在线案例已存在于本地案例库中。');
     return;
   }
-  ElMessage.success(`已导入 ${result.importedCount} 条在线案例，并同步到推荐列表。`);
+  ElMessage.success(`已导入 ${result.importedCount} 条案例，并同步到推荐列表。`);
 }
 
 function downloadSiteAnalysis() {
   if (!store.lastSiteResult) return;
-  downloadJson(
-    `${store.settings.projectName}_site_analysis.json`,
-    store.lastSiteResult
-  );
+  downloadJson(`${store.settings.projectName}_site_analysis.json`, store.lastSiteResult);
 }
 </script>
 
 <style scoped lang="scss">
-.site-grid,
-.detail-grid {
+.analysis-stage,
+.analysis-dashboard,
+.detail-board {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
 }
 
-.input-panel,
-.panel {
-  padding: 1rem 1.1rem;
+.analysis-stage {
+  grid-template-columns: minmax(0, 1.42fr) minmax(260px, 0.6fr);
 }
 
-.file-state,
-.review-card,
-.analysis-card {
-  padding: 0.95rem 1rem;
-  border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.74);
+.analysis-dashboard {
+  grid-template-columns: minmax(0, 1.4fr) minmax(300px, 0.68fr);
+  align-items: start;
 }
 
-.review-card ul,
-.fact-list {
-  margin: 0.7rem 0 0;
-  padding-left: 1rem;
+.detail-board {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.studio-panel,
+.board-panel,
+.dashboard-stack,
+.pebble-panel,
+.note-panel {
+  padding: 1.15rem 1.2rem;
+  background:
+    radial-gradient(circle at top right, rgba(216, 203, 171, 0.16), transparent 26%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.54), rgba(241, 240, 232, 0.42)),
+    rgba(255, 252, 246, 0.42);
+}
+
+.studio-panel__head,
 .panel-head {
   display: flex;
   justify-content: space-between;
@@ -429,39 +478,167 @@ function downloadSiteAnalysis() {
   align-items: flex-start;
 }
 
-.action-row {
+.studio-panel__file {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.95rem 1rem;
+  border-radius: 999px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.68), rgba(239, 238, 230, 0.46)),
+    rgba(255, 252, 246, 0.38);
+  border: 1px solid rgba(113, 132, 109, 0.08);
+  margin: 1rem 0;
+}
+
+.studio-panel__actions {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
+  margin-top: 1rem;
 }
 
-.analysis-grid,
-.recommendation-grid {
+.analysis-side,
+.dashboard-panel--side {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.85rem;
+  gap: 1rem;
 }
 
-.analysis-card p {
-  margin: 0;
+.hero-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.hero-summary__item {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.9rem 1rem;
+  border-radius: 44% 56% 48% 52% / 46% 41% 59% 54%;
+  border: 1px solid rgba(113, 132, 109, 0.08);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.65), rgba(239, 238, 230, 0.44)),
+    rgba(255, 252, 246, 0.4);
+  box-shadow: var(--shadow-soft);
+}
+
+.hero-summary__item strong {
+  font-size: 1.8rem;
+  line-height: 1;
+  font-family: var(--font-display);
+}
+
+.pebble-list {
+  display: grid;
+  gap: 0.85rem;
+  margin-top: 0.8rem;
+}
+
+.pebble-pill {
+  display: grid;
+  gap: 0.2rem;
+  padding: 1rem 1.1rem;
+  border-radius: 999px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(239, 238, 230, 0.46)),
+    rgba(255, 252, 246, 0.42);
+  border: 1px solid rgba(113, 132, 109, 0.08);
+}
+
+.pebble-pill span {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+}
+
+.pebble-pill strong,
+.note-panel strong {
+  font-family: var(--font-display);
+}
+
+.pebble-pill strong {
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+.note-panel {
+  align-content: center;
+  border-radius: 46% 54% 49% 51% / 44% 42% 58% 56%;
+}
+
+.note-panel strong {
+  font-size: 1.36rem;
+  line-height: 1.2;
+}
+
+.analysis-matrix,
+.quad-grid,
+.recommendation-grid,
+.metric-pebbles {
+  display: grid;
+  gap: 1rem;
+}
+
+.analysis-matrix {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 1rem;
+}
+
+.quad-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 1rem;
+}
+
+.quad-grid--two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.analysis-node,
+.review-card,
+.checkbox-card {
+  padding: 1rem 1.05rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(113, 132, 109, 0.08);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.62), rgba(240, 239, 231, 0.46)),
+    rgba(255, 252, 246, 0.38);
+  box-shadow: var(--shadow-soft);
+}
+
+.analysis-node p,
+.review-card ul,
+.fact-list {
+  margin: 0.7rem 0 0;
+}
+
+.analysis-node p {
+  color: var(--text-secondary);
   line-height: 1.7;
+  overflow-wrap: anywhere;
 }
 
 .info-label {
   display: block;
-  margin-bottom: 0.55rem;
   color: var(--text-secondary);
-  font-size: 0.86rem;
-  letter-spacing: 0.03em;
+  font-size: 0.76rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.metric-pebbles {
+  grid-template-columns: 1fr;
+}
+
+.recommendation-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  margin-top: 1rem;
+}
+
+.recommendation-grid--online {
+  margin-top: 1rem;
 }
 
 .checkbox-card {
   display: grid;
   gap: 0.75rem;
-  padding: 0.8rem;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--line-soft);
-  background: rgba(255, 255, 255, 0.62);
 }
 
 .checkbox-card__head {
@@ -470,10 +647,22 @@ function downloadSiteAnalysis() {
 }
 
 @media (max-width: 1180px) {
-  .site-grid,
-  .detail-grid,
-  .analysis-grid,
-  .recommendation-grid {
+  .analysis-stage,
+  .analysis-dashboard,
+  .detail-board {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .studio-panel__head,
+  .panel-head {
+    flex-direction: column;
+  }
+
+  .analysis-matrix,
+  .quad-grid,
+  .hero-summary {
     grid-template-columns: 1fr;
   }
 }

@@ -18,6 +18,18 @@
             先做场地分析
           </el-button>
         </template>
+        <template #aside>
+          <div class="hero-summary">
+            <div class="hero-summary__item">
+              <span class="section-caption">文档数</span>
+              <strong>{{ store.knowledgeBase.documentCount }}</strong>
+            </div>
+            <div class="hero-summary__item">
+              <span class="section-caption">状态</span>
+              <strong>{{ store.knowledgeBase.ready ? 'Ready' : 'Waiting' }}</strong>
+            </div>
+          </div>
+        </template>
       </PageHero>
 
       <section class="metric-grid">
@@ -99,7 +111,7 @@
             <el-select
               v-model="previewFileId"
               placeholder="选择预览文件"
-              style="width: 240px"
+              class="preview-select"
             >
               <el-option
                 v-for="item in store.knowledgeBase.documents"
@@ -272,21 +284,30 @@ async function handleDeleteRecord(documentId: string) {
 <style scoped lang="scss">
 .kb-grid {
   display: grid;
-  grid-template-columns: minmax(320px, 0.92fr) minmax(0, 1.08fr);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr));
   gap: 1rem;
 }
 
 .panel,
 .upload-panel {
-  padding: 1rem 1.1rem;
+  padding: 1.1rem 1.2rem;
+  min-width: 0;
+  background:
+    radial-gradient(circle at top right, rgba(216, 203, 171, 0.16), transparent 26%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.52), rgba(241, 240, 232, 0.42)),
+    rgba(255, 252, 246, 0.42);
 }
 
 .file-state {
   display: grid;
   gap: 0.35rem;
-  padding: 0.95rem 1rem;
-  border-radius: var(--radius-md);
-  background: linear-gradient(135deg, rgba(72, 110, 89, 0.09), rgba(200, 116, 72, 0.08));
+  padding: 1rem 1.05rem;
+  border-radius: var(--radius-lg);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.62), rgba(234, 237, 227, 0.45)),
+    rgba(255, 252, 246, 0.42);
+  border: 1px solid rgba(113, 132, 109, 0.08);
+  box-shadow: var(--shadow-soft);
 }
 
 .action-row {
@@ -299,9 +320,14 @@ async function handleDeleteRecord(documentId: string) {
 .preview-card {
   display: grid;
   gap: 0.55rem;
-  padding: 1rem;
-  border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.72);
+  padding: 1rem 1.05rem;
+  border-radius: var(--radius-lg);
+  min-width: 0;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.62), rgba(240, 239, 231, 0.46)),
+    rgba(255, 252, 246, 0.4);
+  border: 1px solid rgba(113, 132, 109, 0.08);
+  box-shadow: var(--shadow-soft);
 }
 
 .precheck-card p,
@@ -317,6 +343,35 @@ async function handleDeleteRecord(documentId: string) {
   align-items: flex-start;
 }
 
+.preview-select {
+  width: min(100%, 280px);
+}
+
+.hero-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.hero-summary__item {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.9rem 1rem;
+  border-radius: 44% 56% 48% 52% / 46% 41% 59% 54%;
+  border: 1px solid rgba(113, 132, 109, 0.08);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.65), rgba(239, 238, 230, 0.44)),
+    rgba(255, 252, 246, 0.4);
+  box-shadow: var(--shadow-soft);
+}
+
+.hero-summary__item strong {
+  font-size: 1.8rem;
+  line-height: 1.1;
+  font-family: var(--font-display);
+  word-break: break-word;
+}
+
 @media (max-width: 1080px) {
   .kb-grid {
     grid-template-columns: 1fr;
@@ -327,6 +382,10 @@ async function handleDeleteRecord(documentId: string) {
   .panel-head,
   .preview-card__head {
     flex-direction: column;
+  }
+
+  .hero-summary {
+    grid-template-columns: 1fr;
   }
 }
 </style>
