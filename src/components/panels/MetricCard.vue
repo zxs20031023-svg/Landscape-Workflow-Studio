@@ -19,10 +19,18 @@ defineProps<{
   display: grid;
   gap: 0.42rem;
   min-width: 0;
-  padding: 1rem 1.1rem;
+  padding: 0.95rem 1rem;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.58), rgba(242, 240, 233, 0.45)),
     rgba(255, 252, 246, 0.44);
+}
+
+.metric-card::after {
+  content: '';
+  width: 42px;
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent), rgba(98, 122, 93, 0.18));
 }
 
 .metric-card__label,
@@ -38,9 +46,10 @@ defineProps<{
 
 .metric-card strong {
   min-width: 0;
-  font-size: clamp(1.6rem, 2.2vw, 2.2rem);
+  font-size: clamp(1.45rem, 2vw, 2rem);
   line-height: 1;
   font-family: var(--font-display);
   word-break: break-word;
+  font-variant-numeric: tabular-nums;
 }
 </style>

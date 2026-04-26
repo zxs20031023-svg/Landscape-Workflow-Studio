@@ -164,12 +164,12 @@ function downloadSiteResult() {
 <style scoped lang="scss">
 .archive-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.62fr);
+  grid-template-columns: minmax(0, 1.46fr) minmax(280px, 0.58fr);
   gap: 1rem;
 }
 
 .archive-panel {
-  padding: 1.15rem 1.2rem;
+  padding: 1.05rem 1.1rem;
   background:
     radial-gradient(circle at top right, rgba(216, 203, 171, 0.16), transparent 26%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.54), rgba(241, 240, 232, 0.42)),
@@ -187,13 +187,12 @@ function downloadSiteResult() {
 
 .archive-panel--note {
   align-content: center;
-  border-radius: 46% 54% 49% 51% / 44% 42% 58% 56%;
 }
 
 .archive-panel--note strong {
   font-family: var(--font-display);
-  font-size: 1.35rem;
-  line-height: 1.2;
+  font-size: 1.2rem;
+  line-height: 1.28;
 }
 
 .panel-head {
@@ -208,8 +207,8 @@ function downloadSiteResult() {
 }
 
 .timeline-card {
-  padding: 1rem 1.05rem;
-  border-radius: var(--radius-lg);
+  padding: 0.95rem 1rem;
+  border-radius: var(--radius-md);
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.62), rgba(240, 239, 231, 0.46)),
     rgba(255, 252, 246, 0.38);
@@ -232,8 +231,8 @@ function downloadSiteResult() {
 .asset-pebble {
   display: grid;
   gap: 0.2rem;
-  padding: 1rem 1.05rem;
-  border-radius: 999px;
+  padding: 0.85rem 0.95rem;
+  border-radius: var(--radius-md);
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.68), rgba(239, 238, 230, 0.46)),
     rgba(255, 252, 246, 0.4);
@@ -251,7 +250,7 @@ function downloadSiteResult() {
 }
 
 .asset-pebble strong {
-  font-size: 1.5rem;
+  font-size: 1.38rem;
   line-height: 1;
 }
 
@@ -270,8 +269,8 @@ function downloadSiteResult() {
 .hero-summary__item {
   display: grid;
   gap: 0.35rem;
-  padding: 0.9rem 1rem;
-  border-radius: 44% 56% 48% 52% / 46% 41% 59% 54%;
+  padding: 0.85rem 0.95rem;
+  border-radius: var(--radius-md);
   border: 1px solid rgba(113, 132, 109, 0.08);
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.65), rgba(239, 238, 230, 0.44)),
@@ -280,7 +279,7 @@ function downloadSiteResult() {
 }
 
 .hero-summary__item strong {
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   line-height: 1;
 }
 

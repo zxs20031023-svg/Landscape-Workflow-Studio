@@ -290,7 +290,7 @@ async function handleDeleteRecord(documentId: string) {
 
 .panel,
 .upload-panel {
-  padding: 1.1rem 1.2rem;
+  padding: 1.05rem 1.1rem;
   min-width: 0;
   background:
     radial-gradient(circle at top right, rgba(216, 203, 171, 0.16), transparent 26%),
@@ -301,8 +301,8 @@ async function handleDeleteRecord(documentId: string) {
 .file-state {
   display: grid;
   gap: 0.35rem;
-  padding: 1rem 1.05rem;
-  border-radius: var(--radius-lg);
+  padding: 0.9rem 0.95rem;
+  border-radius: var(--radius-md);
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.62), rgba(234, 237, 227, 0.45)),
     rgba(255, 252, 246, 0.42);
@@ -313,15 +313,15 @@ async function handleDeleteRecord(documentId: string) {
 .action-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
+  gap: 0.65rem;
 }
 
 .precheck-card,
 .preview-card {
   display: grid;
   gap: 0.55rem;
-  padding: 1rem 1.05rem;
-  border-radius: var(--radius-lg);
+  padding: 0.95rem 1rem;
+  border-radius: var(--radius-md);
   min-width: 0;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.62), rgba(240, 239, 231, 0.46)),
@@ -356,8 +356,8 @@ async function handleDeleteRecord(documentId: string) {
 .hero-summary__item {
   display: grid;
   gap: 0.35rem;
-  padding: 0.9rem 1rem;
-  border-radius: 44% 56% 48% 52% / 46% 41% 59% 54%;
+  padding: 0.85rem 0.95rem;
+  border-radius: var(--radius-md);
   border: 1px solid rgba(113, 132, 109, 0.08);
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.65), rgba(239, 238, 230, 0.44)),
@@ -366,7 +366,7 @@ async function handleDeleteRecord(documentId: string) {
 }
 
 .hero-summary__item strong {
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   line-height: 1.1;
   font-family: var(--font-display);
   word-break: break-word;

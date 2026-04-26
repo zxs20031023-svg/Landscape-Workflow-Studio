@@ -36,31 +36,32 @@ defineProps<{
 <style scoped lang="scss">
 .hero {
   display: grid;
-  grid-template-columns: minmax(0, 1.45fr) minmax(260px, 0.75fr);
+  grid-template-columns: minmax(0, 1.55fr) minmax(280px, 0.72fr);
   gap: clamp(1rem, 1.4vw, 1.5rem);
-  padding: clamp(1.35rem, 2vw, 1.85rem);
+  padding: clamp(1.2rem, 1.8vw, 1.7rem);
   background:
+    linear-gradient(rgba(51, 74, 55, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(51, 74, 55, 0.04) 1px, transparent 1px),
     radial-gradient(circle at 8% 30%, rgba(147, 165, 139, 0.16), transparent 30%),
     radial-gradient(circle at 88% 10%, rgba(221, 205, 160, 0.22), transparent 26%),
-    linear-gradient(135deg, rgba(255, 255, 255, 0.56), rgba(243, 242, 233, 0.46));
+    linear-gradient(135deg, rgba(255, 255, 255, 0.74), rgba(243, 242, 233, 0.56));
+  background-size: 32px 32px, 32px 32px, auto, auto, auto;
 }
 
 .hero::after {
   content: '';
   position: absolute;
-  right: 10%;
-  bottom: -16%;
-  width: 18rem;
-  height: 14rem;
-  border-radius: 54% 46% 42% 58% / 48% 54% 46% 52%;
-  background: rgba(222, 226, 211, 0.3);
-  filter: blur(4px);
+  right: 1.2rem;
+  bottom: 1.2rem;
+  width: min(30%, 18rem);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(98, 122, 93, 0.34));
   pointer-events: none;
 }
 
 .hero-copy {
   display: grid;
-  gap: 1rem;
+  gap: 0.9rem;
   align-content: start;
   position: relative;
   z-index: 1;
@@ -69,7 +70,8 @@ defineProps<{
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
+  gap: 0.65rem;
+  margin-top: 0.15rem;
 }
 
 .hero-aside,
@@ -85,8 +87,8 @@ defineProps<{
 .hero-pebble {
   display: grid;
   gap: 0.5rem;
-  padding: 1.15rem 1.3rem;
-  border-radius: 48% 52% 45% 55% / 43% 44% 56% 57%;
+  padding: 1rem 1.1rem;
+  border-radius: var(--radius-lg);
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(241, 239, 232, 0.52)),
     rgba(255, 252, 247, 0.44);
@@ -96,7 +98,7 @@ defineProps<{
 
 .hero-pebble--small {
   width: fit-content;
-  padding: 0.85rem 1.2rem;
+  padding: 0.75rem 1rem;
   justify-self: end;
 }
 
@@ -108,10 +110,10 @@ defineProps<{
 }
 
 .hero-pebble strong {
-  max-width: 18ch;
+  max-width: 22ch;
   font-family: var(--font-display);
-  font-size: 1.28rem;
-  line-height: 1.18;
+  font-size: 1.18rem;
+  line-height: 1.22;
 }
 
 @media (max-width: 1180px) {
@@ -127,6 +129,12 @@ defineProps<{
 
   .hero-pebble--small {
     justify-self: start;
+  }
+}
+
+@media (max-width: 560px) {
+  .hero-actions :deep(.el-button) {
+    width: 100%;
   }
 }
 </style>

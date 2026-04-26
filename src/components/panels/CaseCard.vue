@@ -44,9 +44,9 @@ defineProps<{
 <style scoped lang="scss">
 .case-card {
   display: grid;
-  grid-template-columns: minmax(116px, 144px) minmax(0, 1fr);
-  gap: 1rem;
-  padding: 1rem;
+  grid-template-columns: minmax(104px, 128px) minmax(0, 1fr);
+  gap: 0.85rem;
+  padding: 0.95rem;
   min-width: 0;
   background:
     radial-gradient(circle at top right, rgba(223, 210, 172, 0.18), transparent 28%),
@@ -57,8 +57,8 @@ defineProps<{
   display: grid;
   align-content: start;
   gap: 0.32rem;
-  padding: 0.95rem;
-  border-radius: 38% 62% 49% 51% / 42% 44% 56% 58%;
+  padding: 0.85rem;
+  border-radius: var(--radius-md);
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.62), rgba(231, 234, 224, 0.45)),
     rgba(247, 244, 236, 0.6);
@@ -68,7 +68,7 @@ defineProps<{
 .case-card__body {
   min-width: 0;
   display: grid;
-  gap: 0.55rem;
+  gap: 0.5rem;
 }
 
 .case-card__score span,
@@ -79,9 +79,10 @@ defineProps<{
 }
 
 .case-card__score strong {
-  font-size: 2rem;
+  font-size: 1.8rem;
   line-height: 1;
   font-family: var(--font-display);
+  font-variant-numeric: tabular-nums;
 }
 
 .case-card__title {
@@ -93,7 +94,7 @@ defineProps<{
 
 .case-card__title h3 {
   margin: 0;
-  font-size: 1.22rem;
+  font-size: 1.1rem;
   min-width: 0;
   line-height: 1.3;
   word-break: break-word;
@@ -102,7 +103,7 @@ defineProps<{
 .case-card__summary {
   margin: 0;
   color: var(--ink-soft);
-  line-height: 1.7;
+  line-height: 1.62;
   word-break: break-word;
 }
 
@@ -114,6 +115,10 @@ defineProps<{
 .case-card__link {
   color: var(--brand-deep);
   font-weight: 700;
+  width: fit-content;
+  min-height: 34px;
+  display: inline-flex;
+  align-items: center;
 }
 
 @media (max-width: 720px) {

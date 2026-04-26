@@ -196,10 +196,10 @@ const featuredMessage = computed(() => {
 <style scoped lang="scss">
 .hero-aside-card {
   display: grid;
-  gap: 0.9rem;
-  padding: 1.15rem 1.2rem;
+  gap: 0.8rem;
+  padding: 1rem 1.1rem;
   min-height: 100%;
-  border-radius: 42% 58% 46% 54% / 45% 42% 58% 55%;
+  border-radius: var(--radius-lg);
   border: 1px solid rgba(113, 132, 109, 0.08);
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.64), rgba(240, 239, 231, 0.45)),
@@ -214,14 +214,14 @@ const featuredMessage = computed(() => {
 
 .dashboard-stage {
   display: grid;
-  grid-template-columns: minmax(0, 1.45fr) minmax(260px, 0.62fr);
+  grid-template-columns: minmax(0, 1.5fr) minmax(260px, 0.58fr);
   gap: 1rem;
 }
 
 .stage-board,
 .side-card,
 .content-panel {
-  padding: 1.15rem 1.2rem;
+  padding: 1.05rem 1.1rem;
 }
 
 .stage-board {
@@ -248,17 +248,17 @@ const featuredMessage = computed(() => {
 
 .pulse-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.95rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.85rem;
   margin-top: 1rem;
 }
 
 .pulse-card {
   display: grid;
   gap: 0.45rem;
-  min-height: 9.5rem;
-  padding: 1rem 1.05rem;
-  border-radius: 2rem;
+  min-height: 9rem;
+  padding: 0.95rem 1rem;
+  border-radius: var(--radius-md);
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.66), rgba(239, 238, 230, 0.46)),
     rgba(255, 252, 246, 0.4);
@@ -268,7 +268,7 @@ const featuredMessage = computed(() => {
 
 .pulse-card--main {
   grid-column: span 2;
-  min-height: 12rem;
+  min-height: 11.5rem;
   align-content: start;
 }
 
@@ -279,8 +279,8 @@ const featuredMessage = computed(() => {
 
 .pulse-card--main strong {
   font-family: var(--font-display);
-  font-size: clamp(1.8rem, 2.8vw, 2.6rem);
-  line-height: 0.95;
+  font-size: clamp(1.65rem, 2.5vw, 2.35rem);
+  line-height: 1;
 }
 
 .pulse-card p {
@@ -312,20 +312,19 @@ const featuredMessage = computed(() => {
 
 .side-card--note {
   align-content: center;
-  border-radius: 46% 54% 49% 51% / 44% 42% 58% 56%;
 }
 
 .side-card--note strong {
   font-family: var(--font-display);
-  font-size: 1.36rem;
-  line-height: 1.2;
+  font-size: 1.2rem;
+  line-height: 1.28;
 }
 
 .side-stat {
   display: grid;
   gap: 0.25rem;
-  padding: 0.95rem 1rem;
-  border-radius: 999px;
+  padding: 0.85rem 0.95rem;
+  border-radius: var(--radius-md);
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(239, 238, 231, 0.46)),
     rgba(255, 252, 246, 0.42);
@@ -345,7 +344,7 @@ const featuredMessage = computed(() => {
 
 .overview-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.18fr) minmax(340px, 0.92fr);
+  grid-template-columns: minmax(0, 1.22fr) minmax(340px, 0.88fr);
   gap: 1rem;
 }
 
@@ -358,8 +357,8 @@ const featuredMessage = computed(() => {
 .timeline-river__item {
   display: grid;
   gap: 0.35rem;
-  padding: 1rem 1.05rem;
-  border-radius: var(--radius-lg);
+  padding: 0.95rem 1rem;
+  border-radius: var(--radius-md);
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.62), rgba(240, 239, 231, 0.46)),
     rgba(255, 252, 246, 0.38);
@@ -386,8 +385,8 @@ const featuredMessage = computed(() => {
 }
 
 .feature-card {
-  padding: 1rem 1.05rem;
-  border-radius: 2rem;
+  padding: 0.95rem 1rem;
+  border-radius: var(--radius-md);
   border: 1px solid rgba(113, 132, 109, 0.08);
   background:
     radial-gradient(circle at top right, rgba(212, 199, 162, 0.16), transparent 28%),

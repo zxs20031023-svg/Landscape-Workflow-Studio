@@ -244,12 +244,12 @@ async function handleReset() {
 <style scoped lang="scss">
 .settings-stage {
   display: grid;
-  grid-template-columns: minmax(300px, 0.74fr) minmax(0, 1.1fr) minmax(280px, 0.62fr);
+  grid-template-columns: minmax(300px, 0.72fr) minmax(0, 1.16fr) minmax(280px, 0.58fr);
   gap: 1rem;
 }
 
 .stage-panel {
-  padding: 1.15rem 1.2rem;
+  padding: 1.05rem 1.1rem;
   background:
     radial-gradient(circle at top right, rgba(216, 203, 171, 0.16), transparent 26%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.54), rgba(241, 240, 232, 0.42)),
@@ -263,13 +263,12 @@ async function handleReset() {
 
 .stage-panel--note {
   align-content: center;
-  border-radius: 46% 54% 49% 51% / 44% 42% 58% 56%;
 }
 
 .stage-panel--note strong {
   font-family: var(--font-display);
-  font-size: 1.34rem;
-  line-height: 1.2;
+  font-size: 1.2rem;
+  line-height: 1.28;
 }
 
 .grid-two {
@@ -282,7 +281,7 @@ async function handleReset() {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.65rem;
 }
 
 .action-row--between {
@@ -290,8 +289,8 @@ async function handleReset() {
 }
 
 .prompt-help {
-  padding: 0.95rem 1rem;
-  border-radius: var(--radius-lg);
+  padding: 0.9rem 0.95rem;
+  border-radius: var(--radius-md);
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.62), rgba(239, 238, 230, 0.46)),
     rgba(255, 252, 246, 0.4);
@@ -312,8 +311,8 @@ async function handleReset() {
 }
 
 .mapping-item {
-  padding: 0.95rem 1rem;
-  border-radius: var(--radius-lg);
+  padding: 0.9rem 0.95rem;
+  border-radius: var(--radius-md);
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.62), rgba(240, 239, 231, 0.46)),
     rgba(255, 252, 246, 0.38);
@@ -335,8 +334,8 @@ async function handleReset() {
 .hero-summary__item {
   display: grid;
   gap: 0.35rem;
-  padding: 0.9rem 1rem;
-  border-radius: 44% 56% 48% 52% / 46% 41% 59% 54%;
+  padding: 0.85rem 0.95rem;
+  border-radius: var(--radius-md);
   border: 1px solid rgba(113, 132, 109, 0.08);
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.65), rgba(239, 238, 230, 0.44)),
@@ -345,7 +344,7 @@ async function handleReset() {
 }
 
 .hero-summary__item strong {
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   line-height: 1;
   font-family: var(--font-display);
   word-break: break-word;

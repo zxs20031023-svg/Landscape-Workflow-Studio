@@ -446,11 +446,11 @@ function downloadSiteAnalysis() {
 }
 
 .analysis-stage {
-  grid-template-columns: minmax(0, 1.42fr) minmax(260px, 0.6fr);
+  grid-template-columns: minmax(0, 1.48fr) minmax(260px, 0.58fr);
 }
 
 .analysis-dashboard {
-  grid-template-columns: minmax(0, 1.4fr) minmax(300px, 0.68fr);
+  grid-template-columns: minmax(0, 1.45fr) minmax(300px, 0.64fr);
   align-items: start;
 }
 
@@ -463,7 +463,7 @@ function downloadSiteAnalysis() {
 .dashboard-stack,
 .pebble-panel,
 .note-panel {
-  padding: 1.15rem 1.2rem;
+  padding: 1.05rem 1.1rem;
   background:
     radial-gradient(circle at top right, rgba(216, 203, 171, 0.16), transparent 26%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.54), rgba(241, 240, 232, 0.42)),
@@ -481,8 +481,8 @@ function downloadSiteAnalysis() {
 .studio-panel__file {
   display: grid;
   gap: 0.25rem;
-  padding: 0.95rem 1rem;
-  border-radius: 999px;
+  padding: 0.85rem 0.95rem;
+  border-radius: var(--radius-md);
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.68), rgba(239, 238, 230, 0.46)),
     rgba(255, 252, 246, 0.38);
@@ -493,7 +493,7 @@ function downloadSiteAnalysis() {
 .studio-panel__actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
+  gap: 0.65rem;
   margin-top: 1rem;
 }
 
@@ -512,8 +512,8 @@ function downloadSiteAnalysis() {
 .hero-summary__item {
   display: grid;
   gap: 0.35rem;
-  padding: 0.9rem 1rem;
-  border-radius: 44% 56% 48% 52% / 46% 41% 59% 54%;
+  padding: 0.85rem 0.95rem;
+  border-radius: var(--radius-md);
   border: 1px solid rgba(113, 132, 109, 0.08);
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.65), rgba(239, 238, 230, 0.44)),
@@ -522,7 +522,7 @@ function downloadSiteAnalysis() {
 }
 
 .hero-summary__item strong {
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   line-height: 1;
   font-family: var(--font-display);
 }
@@ -536,8 +536,8 @@ function downloadSiteAnalysis() {
 .pebble-pill {
   display: grid;
   gap: 0.2rem;
-  padding: 1rem 1.1rem;
-  border-radius: 999px;
+  padding: 0.85rem 0.95rem;
+  border-radius: var(--radius-md);
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(239, 238, 230, 0.46)),
     rgba(255, 252, 246, 0.42);
@@ -555,18 +555,17 @@ function downloadSiteAnalysis() {
 }
 
 .pebble-pill strong {
-  font-size: 1.6rem;
+  font-size: 1.42rem;
   line-height: 1;
 }
 
 .note-panel {
   align-content: center;
-  border-radius: 46% 54% 49% 51% / 44% 42% 58% 56%;
 }
 
 .note-panel strong {
-  font-size: 1.36rem;
-  line-height: 1.2;
+  font-size: 1.2rem;
+  line-height: 1.28;
 }
 
 .analysis-matrix,
@@ -594,8 +593,8 @@ function downloadSiteAnalysis() {
 .analysis-node,
 .review-card,
 .checkbox-card {
-  padding: 1rem 1.05rem;
-  border-radius: var(--radius-lg);
+  padding: 0.95rem 1rem;
+  border-radius: var(--radius-md);
   border: 1px solid rgba(113, 132, 109, 0.08);
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.62), rgba(240, 239, 231, 0.46)),
@@ -611,7 +610,7 @@ function downloadSiteAnalysis() {
 
 .analysis-node p {
   color: var(--text-secondary);
-  line-height: 1.7;
+  line-height: 1.64;
   overflow-wrap: anywhere;
 }
 

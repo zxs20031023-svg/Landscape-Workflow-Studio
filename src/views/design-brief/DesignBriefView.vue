@@ -428,11 +428,11 @@ function downloadBrief() {
 }
 
 .brief-stage {
-  grid-template-columns: minmax(0, 1.45fr) minmax(290px, 0.62fr);
+  grid-template-columns: minmax(0, 1.5fr) minmax(290px, 0.58fr);
 }
 
 .brief-dashboard {
-  grid-template-columns: minmax(0, 1.42fr) minmax(300px, 0.68fr);
+  grid-template-columns: minmax(0, 1.46fr) minmax(300px, 0.64fr);
   align-items: start;
 }
 
@@ -444,7 +444,7 @@ function downloadBrief() {
 .board-panel,
 .pebble-panel,
 .note-panel {
-  padding: 1.15rem 1.2rem;
+  padding: 1.05rem 1.1rem;
   background:
     radial-gradient(circle at top right, rgba(216, 203, 171, 0.16), transparent 26%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.54), rgba(241, 240, 232, 0.42)),
@@ -480,8 +480,8 @@ function downloadBrief() {
 .hero-summary__item {
   display: grid;
   gap: 0.35rem;
-  padding: 0.9rem 1rem;
-  border-radius: 44% 56% 48% 52% / 46% 41% 59% 54%;
+  padding: 0.85rem 0.95rem;
+  border-radius: var(--radius-md);
   border: 1px solid rgba(113, 132, 109, 0.08);
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.65), rgba(239, 238, 230, 0.44)),
@@ -490,7 +490,7 @@ function downloadBrief() {
 }
 
 .hero-summary__item strong {
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   line-height: 1;
   font-family: var(--font-display);
 }
@@ -511,8 +511,8 @@ function downloadBrief() {
 .summary-node,
 .detail-node,
 .review-card {
-  padding: 1rem 1.05rem;
-  border-radius: var(--radius-lg);
+  padding: 0.95rem 1rem;
+  border-radius: var(--radius-md);
   border: 1px solid rgba(113, 132, 109, 0.08);
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.62), rgba(240, 239, 231, 0.46)),
@@ -525,7 +525,7 @@ function downloadBrief() {
 .review-card ul {
   margin: 0.65rem 0 0;
   color: var(--text-secondary);
-  line-height: 1.7;
+  line-height: 1.64;
 }
 
 .summary-matrix,
@@ -547,8 +547,8 @@ function downloadBrief() {
   display: block;
   margin-top: 0.35rem;
   font-family: var(--font-display);
-  font-size: clamp(2rem, 3vw, 2.8rem);
-  line-height: 0.95;
+  font-size: clamp(1.85rem, 2.8vw, 2.55rem);
+  line-height: 1;
 }
 
 .detail-grid {
@@ -570,13 +570,12 @@ function downloadBrief() {
 
 .note-panel {
   align-content: center;
-  border-radius: 46% 54% 49% 51% / 44% 42% 58% 56%;
 }
 
 .note-panel strong {
   font-family: var(--font-display);
-  font-size: 1.36rem;
-  line-height: 1.2;
+  font-size: 1.2rem;
+  line-height: 1.28;
 }
 
 .info-label {

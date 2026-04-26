@@ -197,7 +197,7 @@ onMounted(() => {
 .app-shell {
   --shell-padding: clamp(0.9rem, 1.4vw, 1.35rem);
   --shell-gap: clamp(1rem, 1.4vw, 1.35rem);
-  --sidebar-width: clamp(260px, 20vw, 290px);
+  --sidebar-width: clamp(268px, 20vw, 304px);
   min-height: 100vh;
   width: 100%;
   max-width: 100%;
@@ -239,11 +239,14 @@ onMounted(() => {
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 1.15rem;
-  padding: 1.2rem;
+  gap: 1rem;
+  padding: 1.05rem;
   background:
-    radial-gradient(circle at top left, rgba(154, 173, 146, 0.16), transparent 32%),
-    linear-gradient(180deg, rgba(249, 247, 240, 0.76), rgba(241, 239, 230, 0.6));
+    linear-gradient(rgba(51, 74, 55, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(51, 74, 55, 0.045) 1px, transparent 1px),
+    radial-gradient(circle at top left, rgba(154, 173, 146, 0.2), transparent 34%),
+    linear-gradient(180deg, rgba(253, 251, 245, 0.86), rgba(239, 239, 228, 0.72));
+  background-size: 28px 28px, 28px 28px, auto, auto;
 }
 
 .sidebar-brand {
@@ -272,14 +275,15 @@ onMounted(() => {
 .sidebar-brand h1 {
   margin: 0;
   font-family: var(--font-display);
-  font-size: 2.2rem;
-  line-height: 0.95;
-  letter-spacing: -0.02em;
+  font-size: 2rem;
+  line-height: 1;
+  letter-spacing: 0;
 }
 
 .sidebar-brand p {
   margin: 0;
   color: var(--text-secondary);
+  line-height: 1.65;
 }
 
 .sidebar-overview {
@@ -291,8 +295,8 @@ onMounted(() => {
 .sidebar-pill {
   display: grid;
   gap: 0.28rem;
-  padding: 0.95rem 1rem;
-  border: 1px solid rgba(87, 98, 82, 0.08);
+  padding: 0.85rem 0.95rem;
+  border: 1px solid rgba(87, 98, 82, 0.1);
   border-radius: var(--radius-md);
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.68), rgba(242, 240, 232, 0.56)),
@@ -328,30 +332,39 @@ onMounted(() => {
 
 .nav-menu :deep(.el-menu-item) {
   margin-bottom: 0.45rem;
-  border-radius: 18px;
-  height: 52px;
-  padding-inline: 1rem;
+  border-radius: 12px;
+  height: 48px;
+  padding-inline: 0.88rem;
   font-weight: 600;
+  transition:
+    background-color 180ms var(--ease-standard),
+    color 180ms var(--ease-standard),
+    transform 180ms var(--ease-standard);
 }
 
 .nav-menu :deep(.el-menu-item:hover) {
-  background: rgba(255, 255, 255, 0.44);
+  background: rgba(255, 255, 255, 0.58);
+  transform: translateX(2px);
 }
 
 .nav-menu :deep(.el-menu-item.is-active) {
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.62), rgba(228, 229, 219, 0.48)),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.78), rgba(226, 230, 216, 0.6)),
     rgba(255, 255, 255, 0.5);
   color: var(--brand-deep);
-  box-shadow: inset 0 0 0 1px rgba(113, 132, 109, 0.08);
+  box-shadow:
+    inset 3px 0 0 var(--accent),
+    inset 0 0 0 1px rgba(98, 122, 93, 0.12);
 }
 
 .sidebar-card {
   margin-top: auto;
-  padding: 1rem 1.05rem;
+  padding: 0.95rem 1rem;
   border: 1px solid var(--line-soft);
   border-radius: var(--radius-lg);
-  background: rgba(255, 252, 247, 0.56);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.62), rgba(241, 239, 230, 0.44)),
+    rgba(255, 252, 247, 0.62);
 }
 
 .sidebar-card__head {
@@ -377,12 +390,13 @@ onMounted(() => {
   );
   margin-left: calc(var(--sidebar-width) + var(--shell-gap));
   display: grid;
-  gap: 1.15rem;
+  gap: 1rem;
   overflow-x: clip;
 }
 
 .topbar {
   display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(360px, 0.72fr);
   gap: 1rem;
   align-items: start;
 }
@@ -390,11 +404,12 @@ onMounted(() => {
 .topbar__metrics {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.95rem;
+  gap: 0.85rem;
+  order: 2;
 }
 
 .topbar-metric {
-  padding: 1rem 1.15rem;
+  padding: 0.9rem 1rem;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.58), rgba(244, 242, 234, 0.48)),
     rgba(255, 252, 246, 0.42);
@@ -408,7 +423,7 @@ onMounted(() => {
 .topbar-metric strong {
   display: block;
   margin-top: 0.35rem;
-  font-size: clamp(1.7rem, 2vw, 2rem);
+  font-size: clamp(1.45rem, 1.8vw, 1.85rem);
   line-height: 1;
   font-family: var(--font-display);
 }
@@ -417,6 +432,7 @@ onMounted(() => {
   display: grid;
   gap: 0.3rem;
   padding: 0.1rem 0.15rem;
+  order: 1;
 }
 
 .topbar__eyebrow {
@@ -430,8 +446,8 @@ onMounted(() => {
 .topbar h2 {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(2.4rem, 4vw, 3.5rem);
-  line-height: 0.95;
+  font-size: clamp(2.1rem, 3.4vw, 3.1rem);
+  line-height: 1;
 }
 
 .topbar__headline > p:last-child {
@@ -455,9 +471,18 @@ onMounted(() => {
   .topbar__metrics {
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
   }
+
+  .topbar {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 1080px) {
+  .app-shell {
+    display: grid;
+    gap: 1rem;
+  }
+
   .app-sidebar {
     position: static;
     left: auto;
@@ -465,6 +490,12 @@ onMounted(() => {
     width: 100%;
     height: auto;
     overflow: visible;
+  }
+
+  .sidebar-brand,
+  .sidebar-overview,
+  .sidebar-card {
+    max-width: 100%;
   }
 
   .app-main {
@@ -475,8 +506,20 @@ onMounted(() => {
 }
 
 @media (max-width: 720px) {
+  .app-shell {
+    --shell-padding: 0.75rem;
+  }
+
+  .app-sidebar {
+    padding: 0.85rem;
+  }
+
   .topbar__metrics {
     grid-template-columns: 1fr;
+  }
+
+  .sidebar-brand__top {
+    align-items: flex-start;
   }
 }
 </style>
